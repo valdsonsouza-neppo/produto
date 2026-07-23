@@ -1,0 +1,412 @@
+"Summary","Issue Type","Component","Description","Labels","Labels","Labels","Labels"
+"Onboarding de ativação de canais na Central de Canais","Epic","Central de Canais","- **Tipo sugerido:** Epic / Story
+- **Componente:** Central de Canais
+- **Labels:** `central-de-canais`, `onboarding`, `ativacao`
+
+### Descrição
+Criar um fluxo guiado de onboarding na Central de Canais que oriente o usuário, passo a passo, na ativação do seu primeiro canal (WhatsApp, e-mail, Instagram, Messenger, voz etc.). O onboarding deve reduzir a curva de configuração inicial, apresentar os pré-requisitos de cada canal, indicar o progresso e permitir que o usuário conclua a ativação sem sair do fluxo. Deve ser reaproveitável para novos canais adicionados ao portfólio.
+
+### Critérios de Aceite
+- [ ] Ao acessar a Central de Canais sem nenhum canal ativo, o usuário vê o onboarding de ativação.
+- [ ] O onboarding lista os canais disponíveis com status (disponível, em breve, já ativo).
+- [ ] Cada passo apresenta os pré-requisitos do canal (ex.: conta business, número, credenciais) antes de iniciar.
+- [ ] O progresso é indicado visualmente (ex.: stepper/barra) e persiste caso o usuário saia e retorne.
+- [ ] É possível pular o onboarding e ativar canais manualmente depois.
+- [ ] Ao concluir a ativação de um canal, o onboarding confirma o sucesso e sugere o próximo passo.
+- [ ] Fluxo responsivo (desktop e mobile) e acessível (navegação por teclado e leitores de tela).
+- [ ] Eventos de telemetria disparados em: início, avanço de passo, conclusão e abandono.
+
+### Cenários de Uso
+1. Novo cliente entra pela primeira vez na Central de Canais e é guiado a ativar o WhatsApp.
+2. Cliente que já ativou um canal retorna e o onboarding sugere ativar o próximo canal relevante.
+3. Usuário sem permissão de administração vê instrução para solicitar acesso a quem pode ativar canais.
+4. Cliente abandona no meio e retoma depois exatamente de onde parou.
+
+### Cenários de Teste
+- **Feliz:** ativar um canal do início ao fim pelo onboarding e validar que ele aparece como ativo.
+- **Retomada:** iniciar, sair no passo 2 e retornar — deve reabrir no passo 2 com dados preservados.
+- **Pular:** pular o onboarding e confirmar que a ativação manual continua disponível.
+- **Permissão:** usuário sem permissão não consegue ativar e recebe orientação clara.
+- **Pré-requisito ausente:** tentar avançar sem cumprir um pré-requisito bloqueia com mensagem explicativa.
+- **Responsividade/A11y:** validar o fluxo em mobile e com navegação por teclado/leitor de tela.
+- **Telemetria:** confirmar disparo dos eventos de início, avanço, conclusão e abandono.
+
+---","central-de-canais","onboarding","ativacao",""
+"Adicionar E-mail na Central de Canais","Story","Central de Canais / Canal E-mail","- **Tipo sugerido:** Story
+- **Componente:** Central de Canais / Canal E-mail
+- **Labels:** `central-de-canais`, `canal-email`
+
+### Descrição
+Permitir a ativação do canal de **E-mail** na Central de Canais, incluindo configuração de conta (SMTP/IMAP ou provedor via OAuth), endereço de envio/recebimento, assinatura e validação da conexão. Mensagens recebidas nesse endereço passam a gerar/atualizar conversas na plataforma e respostas são enviadas pelo mesmo canal.
+
+### Critérios de Aceite
+- [ ] Usuário consegue adicionar uma conta de e-mail informando servidor/credenciais ou via OAuth (ex.: Google/Microsoft).
+- [ ] A conexão é validada (teste de envio e recebimento) antes de concluir a ativação.
+- [ ] É possível definir nome de exibição, endereço remetente e assinatura padrão.
+- [ ] E-mails recebidos criam uma nova conversa ou anexam à conversa/contato existente (por thread/remetente).
+- [ ] Respostas enviadas pela plataforma chegam ao destinatário preservando o assunto/thread.
+- [ ] Anexos são suportados no recebimento e no envio (respeitando limite de tamanho).
+- [ ] Credenciais são armazenadas de forma segura (criptografadas) e nunca exibidas em texto puro.
+- [ ] Erros de autenticação/conexão exibem mensagem clara e não ativam o canal.
+
+### Cenários de Uso
+1. Empresa conecta o e-mail de `atendimento@` para centralizar chamados no mesmo inbox da plataforma.
+2. Agente responde a um e-mail do cliente diretamente da conversa, mantendo o histórico do thread.
+3. Cliente envia anexo (boleto, comprovante) e o agente visualiza/baixa na conversa.
+
+### Cenários de Teste
+- **Feliz:** conectar conta via OAuth, validar e receber/responder um e-mail de teste.
+- **SMTP/IMAP manual:** conectar com credenciais manuais válidas e inválidas (erro claro no segundo caso).
+- **Threading:** responder mantém o mesmo assunto/thread; novo remetente gera nova conversa.
+- **Anexos:** enviar/receber anexo dentro e acima do limite (bloqueio com mensagem no segundo caso).
+- **Segurança:** confirmar que credenciais não trafegam/são exibidas em texto puro.
+- **Reautenticação:** token OAuth expirado solicita reconexão sem duplicar o canal.
+
+---","central-de-canais","canal-email","",""
+"Adicionar Instagram na Central de Canais","Story","Central de Canais / Canal Instagram","- **Tipo sugerido:** Story
+- **Componente:** Central de Canais / Canal Instagram
+- **Labels:** `central-de-canais`, `canal-instagram`, `meta`
+
+### Descrição
+Permitir a ativação do canal **Instagram** (Direct Messages) na Central de Canais via integração com a Meta (Facebook Login / conta Instagram Business vinculada a uma página do Facebook). Mensagens de Direct passam a gerar conversas na plataforma, com suporte a mídias e às regras de janela de atendimento da Meta.
+
+### Critérios de Aceite
+- [ ] Usuário conecta uma conta Instagram Business autenticando via Meta (OAuth) e selecionando a conta/página.
+- [ ] São solicitadas as permissões mínimas necessárias (mensageria do Instagram).
+- [ ] Mensagens de Direct recebidas criam/atualizam conversas na plataforma.
+- [ ] Suporte a envio e recebimento de texto e mídias (imagem, vídeo, áudio) conforme a API da Meta.
+- [ ] A janela de atendimento de 24h (mensagens fora da janela) é respeitada e sinalizada ao agente.
+- [ ] Desconectar o canal encerra o recebimento e informa impacto nas conversas ativas.
+- [ ] Falha de permissão/expiração de token exibe estado de erro e caminho de reconexão.
+
+### Cenários de Uso
+1. Marca conecta seu Instagram Business para atender clientes que chamam no Direct.
+2. Cliente envia foto de um produto no Direct e o agente responde na mesma conversa.
+3. Cliente responde após 24h e o agente é avisado sobre a limitação de janela.
+
+### Cenários de Teste
+- **Feliz:** conectar conta Business, receber e responder um Direct de teste.
+- **Sem página vinculada:** conta Instagram não vinculada a página do Facebook exibe orientação.
+- **Mídias:** enviar/receber imagem, vídeo e áudio.
+- **Janela 24h:** mensagem fora da janela é sinalizada e o envio segue as regras da Meta.
+- **Token expirado:** simular expiração e validar fluxo de reconexão.
+- **Permissões negadas:** usuário nega permissão no OAuth e recebe mensagem clara.
+
+---","central-de-canais","canal-instagram","meta",""
+"Adicionar Facebook Messenger na Central de Canais","Story","Central de Canais / Canal Messenger","- **Tipo sugerido:** Story
+- **Componente:** Central de Canais / Canal Messenger
+- **Labels:** `central-de-canais`, `canal-messenger`, `meta`
+
+### Descrição
+Permitir a ativação do canal **Facebook Messenger** na Central de Canais via integração com a Meta, vinculando uma página do Facebook. Mensagens enviadas à página passam a gerar conversas na plataforma, respeitando as políticas de mensageria da Meta (janela de 24h e tags de mensagem quando aplicável).
+
+### Critérios de Aceite
+- [ ] Usuário autentica via Meta (OAuth) e seleciona a página do Facebook a ser conectada.
+- [ ] Permissões de mensageria (`pages_messaging`) são solicitadas.
+- [ ] Mensagens recebidas na página criam/atualizam conversas na plataforma.
+- [ ] Suporte a texto, mídias e quick replies conforme a API do Messenger.
+- [ ] Janela de 24h respeitada; envio fora da janela usa message tags permitidas ou é bloqueado com aviso.
+- [ ] Múltiplas páginas podem ser conectadas (cada uma como um canal).
+- [ ] Desconexão e reconexão tratadas com mensagens claras.
+
+### Cenários de Uso
+1. Empresa conecta a página do Facebook para atender mensagens do Messenger na plataforma.
+2. Cliente inicia conversa pela página e o agente responde com mídia e quick replies.
+3. Empresa conecta duas páginas (marcas diferentes) e as separa por canal.
+
+### Cenários de Teste
+- **Feliz:** conectar página, receber e responder mensagem de teste.
+- **Multi-página:** conectar duas páginas e validar isolamento das conversas.
+- **Janela 24h:** validar comportamento dentro e fora da janela.
+- **Quick replies/mídias:** enviar e receber corretamente.
+- **Permissões:** negar permissão no OAuth e validar erro; revogar acesso na Meta e validar reconexão.
+
+---","central-de-canais","canal-messenger","meta",""
+"Adicionar Voz na Central de Canais","Epic","Central de Canais / Canal Voz","- **Tipo sugerido:** Epic / Story
+- **Componente:** Central de Canais / Canal Voz
+- **Labels:** `central-de-canais`, `canal-voz`, `telefonia`
+
+### Descrição
+Permitir a ativação do canal de **Voz** (telefonia) na Central de Canais: configuração de número/trunk (SIP), roteamento de chamadas para filas/agentes, gravação e registro das chamadas como interações. Base para funcionalidades avançadas (URA, discador). O canal ativado passa a receber/originar chamadas integradas ao histórico do contato.
+
+### Critérios de Aceite
+- [ ] Usuário consegue configurar um número/entroncamento (SIP trunk) e associá-lo ao canal de Voz.
+- [ ] A conexão/registro SIP é validada antes de ativar o canal.
+- [ ] Chamadas recebidas são roteadas para fila/agente conforme regra configurada.
+- [ ] Chamadas geram registro (data, duração, agente, contato) vinculado ao histórico do contato.
+- [ ] Gravação de chamada disponível (quando habilitada) e armazenada de forma segura.
+- [ ] Controles básicos de chamada disponíveis ao agente (atender, encerrar, mudo, transferir).
+- [ ] Estados de erro (falha de registro SIP, número indisponível) exibem mensagem clara.
+
+### Cenários de Uso
+1. Empresa conecta seu número de telefonia e recebe chamadas dos clientes na plataforma.
+2. Agente atende uma chamada, consulta o histórico do contato e a transfere para outra fila.
+3. Supervisor revisa a gravação de uma chamada para controle de qualidade.
+
+### Cenários de Teste
+- **Feliz:** configurar trunk válido, receber uma chamada e registrá-la no histórico.
+- **Registro inválido:** credenciais SIP incorretas impedem a ativação com erro claro.
+- **Roteamento:** chamada é direcionada à fila/agente correto conforme regra.
+- **Gravação:** habilitar gravação e validar disponibilidade/segurança do arquivo.
+- **Controles:** atender, mudo, transferir e encerrar funcionam corretamente.
+- **Sem agente disponível:** chamada tratada por fila/transbordo conforme configuração.
+
+---","central-de-canais","canal-voz","telefonia",""
+"Discador Preditivo","Epic","Discador / Voz","- **Tipo sugerido:** Epic
+- **Componente:** Discador / Voz
+- **Labels:** `discador`, `preditivo`, `campanhas`, `telefonia`
+
+### Descrição
+Implementar um **discador preditivo** para campanhas de chamadas ativas (outbound): a partir de um mailing/lista, o sistema disca automaticamente múltiplos números por agente, prevendo a disponibilidade dos agentes para maximizar a taxa de conversas conectadas e reduzir tempo ocioso. Deve tratar chamadas não atendidas, ocupado, caixa postal, detecção de secretária eletrônica (AMD) e respeitar limites de abandono.
+
+### Critérios de Aceite
+- [ ] Criação de campanha com upload/seleção de mailing e associação de agentes/fila.
+- [ ] O algoritmo preditivo ajusta o ritmo de discagem conforme a disponibilidade dos agentes.
+- [ ] Chamadas conectadas com pessoa real são entregues a um agente livre; sem agente, respeita a taxa máxima de abandono configurada.
+- [ ] Classificação automática de resultado: atendida, não atendida, ocupado, caixa postal, número inválido, secretária eletrônica (AMD).
+- [ ] Respeita janelas de horário permitido e regras de retentativa por resultado.
+- [ ] Suporte a lista de não perturbe / opt-out e bloqueio de renúmeros.
+- [ ] Painel com métricas em tempo real: chamadas em curso, taxa de conexão, taxa de abandono, agentes ocupados/livres.
+- [ ] Campanha pode ser pausada, retomada e finalizada; mailing atualizado com o resultado.
+
+### Cenários de Uso
+1. Operação de cobrança sobe um mailing e roda uma campanha preditiva com 20 agentes.
+2. Campanha detecta secretária eletrônica e não ocupa o agente, marcando para retentativa.
+3. Supervisor acompanha a taxa de abandono em tempo real e ajusta a agressividade da discagem.
+
+### Cenários de Teste
+- **Feliz:** rodar campanha, conectar chamada a agente livre e registrar resultado.
+- **Sem agente livre:** chamada conectada sem agente respeita a taxa de abandono máxima.
+- **Classificação:** simular ocupado, caixa postal, número inválido e AMD e validar o resultado gravado.
+- **Retentativa:** número não atendido é reagendado conforme a regra.
+- **Opt-out:** número em lista de não perturbe não é discado.
+- **Janela de horário:** discagem só ocorre dentro do horário permitido.
+- **Pausar/retomar:** campanha pausa sem perder progresso e retoma corretamente.
+- **Carga:** validar comportamento do preditivo sob alto volume (estresse).
+
+---","discador","preditivo","campanhas","telefonia"
+"Criar Gateway SMS","Story","Gateways / Canal SMS","- **Tipo sugerido:** Story / Epic
+- **Componente:** Gateways / Canal SMS
+- **Labels:** `gateway`, `canal-sms`, `integracao`
+
+### Descrição
+Criar um **gateway de SMS** que permita enviar e receber mensagens SMS integrando com provedor(es) (ex.: Zenvia, Twilio, Infobip). Deve suportar configuração de credenciais/remetente, envio individual e em massa, recebimento (MO), status de entrega (DLR) e vínculo das mensagens ao histórico do contato/conversa.
+
+### Critérios de Aceite
+- [ ] Configuração do gateway com credenciais do provedor e remetente (short code / alfanumérico) validadas.
+- [ ] Envio de SMS individual a partir de uma conversa e envio em massa via campanha.
+- [ ] Recebimento de SMS (MO) cria/atualiza conversa na plataforma.
+- [ ] Status de entrega (enviado, entregue, falhou) recebido via callback/DLR e refletido na mensagem.
+- [ ] Tratamento de limite de caracteres e concatenação de mensagens longas.
+- [ ] Suporte a múltiplos provedores configuráveis (abstração de gateway).
+- [ ] Erros do provedor são tratados e exibidos; retentativa conforme política.
+- [ ] Respeito a opt-out (palavra-chave de descadastro) quando aplicável.
+
+### Cenários de Uso
+1. Empresa envia SMS de confirmação de agendamento e recebe a resposta na conversa.
+2. Campanha dispara SMS em massa e acompanha as taxas de entrega.
+3. Cliente responde ""SAIR"" e é adicionado ao opt-out automaticamente.
+
+### Cenários de Teste
+- **Feliz:** configurar gateway, enviar e receber um SMS de teste com DLR entregue.
+- **Credenciais inválidas:** falha na validação com mensagem clara.
+- **Mensagem longa:** concatenação correta e contagem de segmentos.
+- **DLR de falha:** status de falha refletido corretamente na mensagem.
+- **Recebimento (MO):** SMS recebido gera conversa no contato correto.
+- **Opt-out:** palavra-chave de descadastro remove o contato dos envios.
+- **Multi-provedor:** alternar provedor mantém o comportamento.
+
+---","gateway","canal-sms","integracao",""
+"Criar Gateway RCS","Story","Gateways / Canal RCS","- **Tipo sugerido:** Story / Epic
+- **Componente:** Gateways / Canal RCS
+- **Labels:** `gateway`, `canal-rcs`, `integracao`
+
+### Descrição
+Criar um **gateway RCS** (Rich Communication Services) para envio/recebimento de mensagens ricas via provedor RCS (ex.: Google RCS Business Messaging / agregador). Deve suportar agente RCS verificado, mensagens ricamente formatadas (cards, carrosséis, botões/sugestões, mídias), fallback para SMS quando o destinatário não suporta RCS e status de entrega/leitura.
+
+### Critérios de Aceite
+- [ ] Configuração do gateway com credenciais do provedor e agente RCS.
+- [ ] Envio de mensagens de texto e ricas (rich cards, carrossel, quick replies/sugestões, mídias).
+- [ ] Recebimento de mensagens e respostas de sugestões cria/atualiza conversa.
+- [ ] Detecção de capacidade RCS do destinatário com **fallback automático para SMS** quando não suportado.
+- [ ] Status de entrega e leitura refletidos na mensagem.
+- [ ] Erros e limites do provedor tratados com mensagens claras.
+- [ ] Vínculo das mensagens ao histórico do contato/conversa.
+
+### Cenários de Uso
+1. Empresa envia um rich card com botões de ação e o cliente responde tocando numa sugestão.
+2. Destinatário sem suporte a RCS recebe automaticamente um SMS de fallback.
+3. Campanha envia carrossel de ofertas e acompanha leitura/entrega.
+
+### Cenários de Teste
+- **Feliz:** enviar rich card e receber a resposta de sugestão na conversa.
+- **Fallback SMS:** destinatário sem RCS recebe SMS equivalente.
+- **Mídias/carrossel:** renderização e envio corretos.
+- **Status:** entrega e leitura refletidos.
+- **Credenciais/agente inválidos:** falha clara na validação.
+- **Recebimento:** mensagem recebida cria conversa no contato correto.
+
+---","gateway","canal-rcs","integracao",""
+"Criar Gateway de Slack","Story","Gateways / Canal Slack","- **Tipo sugerido:** Story
+- **Componente:** Gateways / Canal Slack
+- **Labels:** `gateway`, `canal-slack`, `integracao`
+
+### Descrição
+Criar um **gateway de Slack** que integre a plataforma a workspaces do Slack, permitindo que mensagens de canais/DMs sejam tratadas como conversas e que agentes respondam pela plataforma. Uso típico: atendimento interno (help desk) ou notificações operacionais. Integração via Slack App (OAuth, Events API e Web API).
+
+### Critérios de Aceite
+- [ ] Instalação/conexão via Slack App com OAuth e escopos mínimos necessários.
+- [ ] Seleção de canais e/ou DMs monitorados que geram conversas na plataforma.
+- [ ] Mensagens recebidas (Events API) criam/atualizam conversas; respostas da plataforma são postadas no Slack.
+- [ ] Suporte a texto, threads, menções e anexos básicos.
+- [ ] Mapeamento de usuário Slack ↔ contato na plataforma.
+- [ ] Desinstalação/revogação do app tratada com estado de erro e reconexão.
+- [ ] Segredos/tokens armazenados de forma segura.
+
+### Cenários de Uso
+1. Time interno abre chamados em um canal do Slack e são atendidos pela plataforma.
+2. Agente responde no thread do Slack diretamente pela conversa na plataforma.
+3. Notificações operacionais são enviadas a um canal do Slack.
+
+### Cenários de Teste
+- **Feliz:** instalar app, monitorar um canal, receber e responder mensagem.
+- **Thread:** resposta mantém o thread correto no Slack.
+- **Escopos insuficientes:** app sem escopo necessário exibe erro claro.
+- **Revogação:** desinstalar o app interrompe o recebimento e sinaliza reconexão.
+- **Mapeamento:** usuário Slack vinculado ao contato correto.
+- **Anexos/menções:** enviados/recebidos corretamente.
+
+---","gateway","canal-slack","integracao",""
+"Criar Gateway Teams","Story","Gateways / Canal Microsoft Teams","- **Tipo sugerido:** Story
+- **Componente:** Gateways / Canal Microsoft Teams
+- **Labels:** `gateway`, `canal-teams`, `integracao`, `microsoft`
+
+### Descrição
+Criar um **gateway do Microsoft Teams** integrando a plataforma via Azure Bot / Bot Framework, permitindo que mensagens em chats/canais do Teams sejam tratadas como conversas e respondidas pelos agentes. Uso típico: atendimento interno e suporte via Teams.
+
+### Critérios de Aceite
+- [ ] Registro/conexão do bot no Azure (App Registration / Bot Framework) com credenciais validadas.
+- [ ] Mensagens enviadas ao bot em chats/canais criam/atualizam conversas na plataforma.
+- [ ] Respostas da plataforma são entregues ao usuário/canal correto no Teams.
+- [ ] Suporte a texto, cards adaptativos (Adaptive Cards) e anexos básicos.
+- [ ] Mapeamento de usuário Teams (AAD) ↔ contato na plataforma.
+- [ ] Tratamento de erros de autenticação/permissão do tenant.
+- [ ] Segredos armazenados de forma segura.
+
+### Cenários de Uso
+1. Colaborador chama o bot de atendimento no Teams e é atendido por um agente na plataforma.
+2. Agente responde com um Adaptive Card com opções de ação.
+3. Mensagem postada em canal do Teams gera conversa para o time de suporte.
+
+### Cenários de Teste
+- **Feliz:** conectar bot, receber e responder mensagem no Teams.
+- **Adaptive Card:** enviar card e processar a ação escolhida.
+- **Credenciais inválidas:** falha clara na conexão do bot.
+- **Canal x chat:** validar recebimento tanto em chat 1:1 quanto em canal.
+- **Permissão de tenant:** tenant sem consentimento exibe orientação.
+- **Mapeamento:** usuário AAD vinculado ao contato correto.
+
+---","gateway","canal-teams","integracao","microsoft"
+"Atualizar WhatsApp com Novos Recursos","Epic","Canal WhatsApp","- **Tipo sugerido:** Epic (com stories por recurso)
+- **Componente:** Canal WhatsApp
+- **Labels:** `canal-whatsapp`, `melhorias`, `mensageria`
+
+### Descrição
+Ampliar os recursos do canal **WhatsApp** para paridade com a API oficial do WhatsApp Cloud, adicionando: **reação (emoji)**, **figurinhas (stickers)**, **contatos compartilhados**, **localização**, **respostas (reply/citação)**, **transcrição de áudio**, **mensagem de lista** e **botão de catálogo**. Cada recurso deve funcionar no envio e/ou recebimento conforme suporte da API, refletindo corretamente na conversa e no histórico.
+
+> Sugestão: quebrar em sub-tarefas (stories) — uma por recurso — sob esta Epic.
+
+### Critérios de Aceite
+- [ ] **Reação (emoji):** receber e enviar reações a mensagens, refletidas na mensagem original.
+- [ ] **Figurinhas (stickers):** receber e enviar stickers (estáticos/animados) com renderização correta.
+- [ ] **Contatos compartilhados:** receber e enviar cartão de contato (vCard) com nome/telefone.
+- [ ] **Localização:** receber e enviar localização (lat/long) com visualização em mapa/link.
+- [ ] **Respostas (reply):** citar/responder uma mensagem específica, exibindo o trecho citado.
+- [ ] **Transcrição de áudio:** áudios recebidos podem ser transcritos em texto para o agente.
+- [ ] **Lista (list message):** enviar mensagem de lista interativa e capturar a opção escolhida.
+- [ ] **Botão de catálogo:** enviar mensagem com botão/itens de catálogo e tratar a interação.
+- [ ] Cada recurso respeita as regras/limites e templates da API oficial do WhatsApp.
+- [ ] Recursos não suportados por uma versão de API exibem fallback ou aviso adequado.
+
+### Cenários de Uso
+1. Cliente reage com 👍 a uma mensagem do agente e a reação aparece na conversa.
+2. Agente envia a localização da loja e o cliente abre no mapa.
+3. Cliente compartilha um contato e o agente o salva/visualiza.
+4. Agente envia uma mensagem de lista com opções de atendimento e o cliente seleciona uma.
+5. Cliente envia um áudio e o agente lê a transcrição sem precisar ouvir.
+6. Agente responde citando a mensagem específica para dar contexto.
+
+### Cenários de Teste
+- **Reação:** enviar/receber reação e remover reação; refletir na mensagem certa.
+- **Stickers:** enviar/receber sticker estático e animado.
+- **Contato:** enviar/receber vCard com múltiplos telefones.
+- **Localização:** enviar/receber coordenadas e validar link de mapa.
+- **Reply:** citar mensagem e validar o trecho exibido; citar mensagem apagada (fallback).
+- **Transcrição:** áudio curto/longo, ruído e idioma; validar precisão e estados de falha.
+- **Lista:** enviar lista, escolher item e capturar a resposta corretamente.
+- **Catálogo:** enviar botão de catálogo e tratar item selecionado.
+- **Limites/API:** validar comportamento fora de janela de 24h e com template obrigatório.
+
+---","canal-whatsapp","melhorias","mensageria",""
+"Discador Preditivo: Voz","Story","Discador / Canal Voz","- **Tipo sugerido:** Story (sob a Epic de Discador Preditivo / Voz)
+- **Componente:** Discador / Canal Voz
+- **Labels:** `discador`, `preditivo`, `canal-voz`, `telefonia`
+
+### Descrição
+Integrar o **discador preditivo** ao **canal de Voz** da plataforma, conectando o algoritmo de discagem à telefonia (SIP/trunk) já configurada. Ao conectar uma chamada com pessoa real, entregar o áudio ao agente com screen-pop do contato, controles de chamada e registro da interação no mesmo histórico do canal de Voz. Garante que campanhas preditivas usem a infraestrutura de voz nativa da plataforma.
+
+### Critérios de Aceite
+- [ ] O discador preditivo utiliza o trunk/número configurado no canal de Voz.
+- [ ] Chamada conectada a pessoa real é encaminhada ao agente com áudio e screen-pop do contato.
+- [ ] Controles de chamada disponíveis ao agente (mudo, transferir, encerrar, notas/qualificação).
+- [ ] A interação é registrada no histórico do contato como chamada de voz (com resultado da campanha).
+- [ ] Gravação da chamada disponível quando habilitada.
+- [ ] Detecção de secretária eletrônica (AMD) não ocupa o agente.
+- [ ] Métricas de voz (duração, conexão, abandono) alimentam o painel da campanha.
+
+### Cenários de Uso
+1. Campanha preditiva conecta um cliente e o agente vê os dados do contato ao atender.
+2. Agente qualifica o resultado da chamada (ex.: ""promessa de pagamento"") e ele é gravado na campanha.
+3. Chamada cai em secretária eletrônica e é reagendada sem ocupar agente.
+
+### Cenários de Teste
+- **Feliz:** discar via campanha, conectar áudio ao agente com screen-pop e registrar resultado.
+- **AMD:** secretária eletrônica detectada não ocupa agente e agenda retentativa.
+- **Controles:** mudo, transferir e encerrar funcionam durante chamada da campanha.
+- **Gravação:** habilitar e validar disponibilidade do arquivo.
+- **Registro:** interação e resultado gravados no histórico do contato.
+- **Trunk indisponível:** falha de telefonia tratada com pausa/aviso na campanha.
+
+---","discador","preditivo","canal-voz","telefonia"
+"Redesign de E-mail","Epic","Canal E-mail / UX","- **Tipo sugerido:** Epic / Story
+- **Componente:** Canal E-mail / UX
+- **Labels:** `canal-email`, `redesign`, `ux`, `frontend`
+
+### Descrição
+Redesenhar a experiência do canal de **E-mail** na plataforma: leitura e composição de mensagens com editor rico (HTML), melhor visualização de threads/histórico, anexos, citações/encaminhamento, assinaturas e responsividade. O objetivo é aproximar a experiência de um cliente de e-mail moderno, mantendo consistência com o design system da Neppo e melhorando produtividade do agente.
+
+### Critérios de Aceite
+- [ ] Nova visualização de thread com histórico encadeado, expansão/colapso de mensagens e citação.
+- [ ] Editor rico (HTML) com formatação, links, imagens inline, assinatura e anexos.
+- [ ] Ações de responder, responder a todos e encaminhar preservando o thread.
+- [ ] Gerenciamento de anexos (arrastar/soltar, pré-visualização, limite de tamanho).
+- [ ] Layout responsivo e aderente ao design system Neppo (cores/tipografia da marca).
+- [ ] Acessibilidade: navegação por teclado, contraste e leitores de tela.
+- [ ] Estados vazios, de carregamento e de erro redesenhados.
+- [ ] Compatibilidade com os recursos atuais do canal (nenhuma regressão funcional).
+
+### Cenários de Uso
+1. Agente lê um thread longo com colapso das mensagens antigas e responde com formatação rica.
+2. Agente encaminha um e-mail com anexo para outro setor mantendo o histórico.
+3. Cliente recebe resposta bem formatada com assinatura e imagem inline.
+
+### Cenários de Teste
+- **Feliz:** compor e enviar e-mail rico com anexo e assinatura; validar recebimento.
+- **Thread:** expandir/colapsar mensagens e validar citação ao responder.
+- **Encaminhar/responder a todos:** destinatários e histórico corretos.
+- **Anexos:** arrastar/soltar, pré-visualizar e respeitar limite de tamanho.
+- **Responsividade/A11y:** validar em mobile e com teclado/leitor de tela.
+- **Regressão:** funcionalidades existentes do canal seguem funcionando.
+- **Estados:** vazio, carregando e erro exibidos corretamente.
+
+---","canal-email","redesign","ux","frontend"
