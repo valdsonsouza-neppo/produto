@@ -250,6 +250,58 @@ h1 em{color:var(--brand-green);font-style:normal}
 .ab-info{background:var(--navy-soft);border:1px solid rgba(37,44,59,.15);color:var(--brand-navy)}
 .ab-success{background:var(--green-soft);border:1px solid rgba(101,204,101,.3);color:var(--green-dark)}
 
+/* ═══ IA / OPENAI ═══ */
+.fld{margin-bottom:14px}
+.flb{display:block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
+  color:var(--text2);margin-bottom:6px}
+.inp,.txa{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:6px;
+  background:var(--brand-white);color:var(--text);font-family:'Roboto',sans-serif;font-size:13px;
+  transition:border-color .15s,box-shadow .15s}
+.inp:focus,.txa:focus{outline:none;border-color:var(--brand-purple);box-shadow:0 0 0 3px var(--accent-soft)}
+.txa{resize:vertical;min-height:92px;line-height:1.5}
+.fhint{font-size:11px;color:var(--text3);margin-top:6px;line-height:1.5}
+.frow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{padding:9px 16px;border-radius:6px;border:1px solid var(--border);background:var(--brand-white);
+  color:var(--text2);font-family:'Roboto',sans-serif;font-size:12px;font-weight:700;cursor:pointer;
+  transition:all .15s;white-space:nowrap}
+.btn:hover:not(:disabled){border-color:var(--border2);color:var(--brand-navy)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-p{background:var(--brand-purple);border-color:var(--brand-purple);color:var(--brand-white)}
+.btn-p:hover:not(:disabled){background:#5A1284;border-color:#5A1284;color:var(--brand-white)}
+.btn-sm{padding:6px 12px;font-size:11px}
+.conn-pill{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border-radius:20px;
+  font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;border:1px solid}
+.cpd{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+.cp-off{background:rgba(138,147,166,.12);color:var(--text2);border-color:rgba(138,147,166,.25)}
+.cp-run{background:var(--navy-soft);color:var(--brand-navy);border-color:rgba(37,44,59,.2)}
+.cp-run .cpd{animation:blink 1.1s infinite}
+.cp-ok{background:var(--green-soft);color:var(--green-dark);border-color:rgba(101,204,101,.35)}
+.cp-fail{background:var(--purple-soft);color:var(--brand-purple);border-color:rgba(108,22,158,.3)}
+.dg{display:flex;gap:10px;padding:9px 0;border-bottom:1px dashed var(--border)}
+.dg:last-child{border-bottom:none}
+.dgi{width:18px;height:18px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;
+  justify-content:center;font-size:11px;font-weight:700;margin-top:1px}
+.dg-ok .dgi{background:var(--green-soft);color:var(--green-dark)}
+.dg-warn .dgi{background:rgba(155,71,209,.12);color:var(--purple-light)}
+.dg-fail .dgi{background:var(--purple-soft);color:var(--brand-purple)}
+.dg-run .dgi{background:var(--navy-soft);color:var(--brand-navy)}
+.dgt{font-size:12.5px;font-weight:500;color:var(--brand-navy);line-height:1.4}
+.dgd{font-size:11.5px;color:var(--text2);margin-top:3px;line-height:1.5;word-break:break-word}
+.dg-empty{font-size:12px;color:var(--text3);padding:6px 0;line-height:1.5}
+.chk{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12.5px;color:var(--text2);cursor:pointer}
+.chk input{accent-color:var(--brand-purple);width:15px;height:15px;cursor:pointer;flex-shrink:0}
+.ia-spin{width:12px;height:12px;border:2px solid rgba(255,255,255,.35);border-top-color:#FFF;
+  border-radius:50%;display:inline-block;animation:spin .7s linear infinite;vertical-align:-1px;margin-right:7px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ia-pre{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px;
+  font-size:11px;line-height:1.5;color:var(--text2);overflow:auto;max-height:320px;white-space:pre;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.ia-chart-box{position:relative;width:100%;height:400px}
+.ia-chart-box canvas{position:absolute!important;top:0;left:0;width:100%!important;height:100%!important}
+.ia-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:10px;color:var(--text3);text-align:center;padding:24px;font-size:12.5px;line-height:1.6}
+.ia-empty .iee{font-size:32px;opacity:.45}
+
 @media(max-width:900px){
   .header,.main,.tabbar{padding-left:16px;padding-right:16px}
   h1{font-size:30px}
@@ -288,6 +340,7 @@ h1 em{color:var(--brand-green);font-style:normal}
     <button class="tab" onclick="show('clientes',this)">Clientes</button>
     <button class="tab" onclick="show('sla',this)">SLA</button>
     <button class="tab" onclick="show('insights',this)">Insights</button>
+    <button class="tab" onclick="show('ia',this)">Gráficos com IA</button>
   </div>
 </nav>
 
@@ -829,6 +882,96 @@ h1 em{color:var(--brand-green);font-style:normal}
   </div>
 </section>
 
+<!-- ═══════════ GRÁFICOS COM IA (OPENAI) ═══════════ -->
+<section id="ia" class="sec">
+  <div class="stitle">Gráficos com IA — OpenAI</div>
+  <div class="sdesc">Conecte uma chave da OpenAI para gerar gráficos sob demanda a partir dos dados deste dashboard. A chamada sai direto do navegador para a API — nenhum dado passa por servidor intermediário.</div>
+
+  <div class="g g23 mb2">
+    <div class="card">
+      <div class="ct" style="justify-content:space-between">
+        <span style="display:flex;align-items:center;gap:8px"><span class="ci">🔌</span>Conexão OpenAI</span>
+        <span class="conn-pill cp-off" id="ia-pill"><span class="cpd"></span>Desconectado</span>
+      </div>
+
+      <div class="fld">
+        <label class="flb" for="ia-key">Chave da API</label>
+        <div class="frow">
+          <input class="inp" id="ia-key" type="password" placeholder="sk-..." autocomplete="off" spellcheck="false" style="flex:1;min-width:200px">
+          <button class="btn btn-sm" type="button" id="ia-btn-eye" onclick="iaToggleKey()">Mostrar</button>
+        </div>
+        <div class="fhint">Gere em <strong>platform.openai.com/api-keys</strong>. A chave é usada apenas neste navegador e nunca é gravada no repositório.</div>
+      </div>
+
+      <div class="g g2" style="gap:14px">
+        <div class="fld">
+          <label class="flb" for="ia-model">Modelo</label>
+          <input class="inp" id="ia-model" list="ia-modelos" value="gpt-4o-mini" spellcheck="false">
+          <datalist id="ia-modelos"></datalist>
+          <div class="fhint">A lista é preenchida com os modelos da sua conta após testar a conexão.</div>
+        </div>
+        <div class="fld">
+          <label class="flb" for="ia-base">Base URL</label>
+          <input class="inp" id="ia-base" value="https://api.openai.com/v1" spellcheck="false">
+          <div class="fhint">Altere apenas se usar um proxy/gateway compatível com a API da OpenAI.</div>
+        </div>
+      </div>
+
+      <label class="chk"><input type="checkbox" id="ia-remember"> Lembrar a chave neste navegador (localStorage)</label>
+
+      <div class="frow mt">
+        <button class="btn btn-p" id="ia-btn-test" type="button" onclick="iaTestar()">Testar conexão</button>
+        <button class="btn" type="button" onclick="iaLimpar()">Limpar</button>
+      </div>
+
+      <div class="alertbox ab-warn">Chamada direta do navegador expõe a chave a quem tiver acesso a esta máquina. Para uso compartilhado, aponte a Base URL para um proxy no seu backend que guarde a chave no servidor.</div>
+    </div>
+
+    <div class="card">
+      <div class="ct"><span class="ci">🩺</span>Diagnóstico da conexão</div>
+      <div id="ia-diag"></div>
+    </div>
+  </div>
+
+  <div class="g g12">
+    <div class="card">
+      <div class="ct"><span class="ci">🧠</span>O que você quer ver?</div>
+      <div class="fld">
+        <textarea class="txa" id="ia-prompt" placeholder="Ex.: evolução mensal de problemas x tarefas em 2025, destacando os picos"></textarea>
+      </div>
+      <div class="flb">Exemplos</div>
+      <div class="s-tabs" id="ia-exemplos"></div>
+      <div class="flb">Dados enviados à IA</div>
+      <div id="ia-ds" class="mb"></div>
+      <button class="btn btn-p" id="ia-btn-gen" type="button" onclick="iaGerar()" style="width:100%">Gerar gráfico</button>
+      <div id="ia-msg"></div>
+    </div>
+
+    <div class="card">
+      <div class="ct" style="justify-content:space-between">
+        <span style="display:flex;align-items:center;gap:8px;min-width:0">
+          <span class="ci">📈</span><span id="ia-titulo" style="overflow:hidden;text-overflow:ellipsis">Gráfico gerado pela IA</span>
+        </span>
+        <span class="frow" style="flex-shrink:0">
+          <button class="btn btn-sm" type="button" id="ia-btn-json" onclick="iaToggleJson()" disabled>Ver JSON</button>
+          <button class="btn btn-sm" type="button" id="ia-btn-png" onclick="iaBaixarPng()" disabled>PNG</button>
+        </span>
+      </div>
+      <div class="ks" id="ia-sub" style="margin-top:-6px;margin-bottom:12px"></div>
+      <div class="ia-chart-box">
+        <div class="ia-empty" id="ia-empty">
+          <div class="iee">📊</div>
+          <div>Nenhum gráfico gerado ainda.<br>Conecte a OpenAI, descreva o gráfico e clique em <strong>Gerar gráfico</strong>.</div>
+        </div>
+        <canvas id="c-ia" style="display:none"></canvas>
+      </div>
+      <div id="ia-insight"></div>
+      <pre class="ia-pre mt" id="ia-json" style="display:none"></pre>
+      <div class="fhint" id="ia-uso"></div>
+    </div>
+  </div>
+</section>
+
 </div><!-- /main -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -1079,6 +1222,7 @@ function initSection(id) {
       {label:'Mediana', data:[15,10,33,37], backgroundColor:['rgba(74,14,107,.3)','rgba(108,22,158,.3)','rgba(155,71,209,.3)','rgba(37,44,59,.3)'], borderRadius:6}
     ]);
   }
+  if(id==='ia') iaInit();
 }
 
 // ═══ RANK ═══
@@ -1249,6 +1393,581 @@ function populateVolTables() {
   sorted.slice(-7).reverse().forEach(d=>{
     tLow.innerHTML+=`<tr><td>${d.m}</td><td class="tr ca tf">${d.t}</td><td class="tr cr tf">${d.p}</td><td class="tr fw">${d.tot}</td></tr>`;
   });
+}
+
+// ═══════════════════════════════════════════════════════
+// ═══ IA — CONEXÃO OPENAI + GERAÇÃO DE GRÁFICOS        ═══
+// ═══════════════════════════════════════════════════════
+const IA_LS = {key:'neppo.ia.apiKey', base:'neppo.ia.baseUrl', model:'neppo.ia.model', remember:'neppo.ia.remember', ds:'neppo.ia.datasets'};
+const IA_BASE_PADRAO = 'https://api.openai.com/v1';
+const IA_MODELO_PADRAO = 'gpt-4o-mini';
+const IA_TIPOS_OK = ['bar','line','pie','doughnut','radar','polarArea','scatter','bubble'];
+const IA_TIMEOUT_CONEXAO = 30000;
+const IA_TIMEOUT_GERACAO = 90000;
+
+function iaEl(id){ return document.getElementById(id); }
+function iaEsc(s){
+  return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function iaEspera(ms){ return new Promise(r=>setTimeout(r, ms)); }
+
+// ─── DADOS DISPONÍVEIS PARA A IA ───
+const IA_DATASETS = {
+  resumo: {label:'Resumo geral', padrao:true, build:()=>({
+    periodo:'Jan/2024 a Abr/2026', issues_totais:1108, problemas:343, tarefas:765,
+    em_aberto:635, concluidos:334, cancelados:139,
+    criticos_e_altos:62, aguardando_deploy:72,
+    problemas_detalhe:{abertos:122, concluidos:160, cancelados:61},
+    tarefas_detalhe:{abertas:513, concluidas:174, canceladas:78},
+    por_ano:{'2024':{problemas:121,tarefas:107},'2025':{problemas:175,tarefas:350},'2026_parcial':{problemas:47,tarefas:109}}
+  })},
+  mensal: {label:'Volume mensal (28 meses)', padrao:true, build:()=>monthly.map(d=>({mes:d.m, tarefas:d.t, problemas:d.p, total:d.t+d.p}))},
+  status: {label:'Distribuição por status', padrao:true, build:()=>{
+    const rot = ['Aberto','Concluído','Cancelado','Aguardando Deploy','Para Fazer','Em Validação','Triagem','Em Progresso','Suspenso+Revisar'];
+    const zip = arr => rot.reduce((o,r,i)=>(o[r]=arr[i],o),{});
+    return {geral:zip([346,334,139,72,69,39,43,35,31]), tarefas:zip([291,174,78,55,59,20,34,35,19]), problemas:zip([55,160,61,17,10,19,9,8,4])};
+  }},
+  criadores: {label:'Criadores (top 12)', padrao:false, build:()=>({
+    tarefas: topCriadoresTar.map(d=>({criador:d.n, total:d.tot, abertos:d.ab, concluidos:d.co, cancelados:d.ca})),
+    problemas: topCriadoresProb.map(d=>({criador:d.n, total:d.tot, abertos:d.ab, concluidos:d.co, cancelados:d.ca}))
+  })},
+  clientes: {label:'Clientes', padrao:false, build:()=>({
+    tarefas: clientesTar.map(d=>({cliente:d.c, total:d.tot, abertos:d.ab, concluidos:d.co, cancelados:d.ca, criticos:d.cr, altos:d.al})),
+    problemas: clientesProb.map(d=>({cliente:d.c, total:d.tot, abertos:d.ab, concluidos:d.co, cancelados:d.ca, criticos:d.cr, altos:d.al}))
+  })},
+  fila: {label:'Fila crítica (Alta/Crítica/Bloqueadora)', padrao:false, build:()=>filaCritica.map(d=>({
+    chave:d.k, tipo:d.tp, prioridade:d.pr, status:d.st, cliente:d.cl, criador:d.cr, resumo:d.s
+  }))},
+  sla: {label:'SLA por prioridade (dias)', padrao:false, build:()=>({
+    problemas:[{prioridade:'Crítica',media:31.3,mediana:12},{prioridade:'Alta',media:71.7,mediana:38},{prioridade:'Média',media:127.2,mediana:76},{prioridade:'Baixa',media:422.7,mediana:467}],
+    tarefas:[{prioridade:'Bloqueadora',media:15,mediana:15},{prioridade:'Crítica',media:98.3,mediana:10},{prioridade:'Alta',media:64,mediana:33},{prioridade:'Média',media:67.2,mediana:37}],
+    media_geral:{problemas:121, tarefas:67}
+  })}
+};
+
+const IA_EXEMPLOS = [
+  'Evolução mensal de problemas x tarefas em 2025',
+  'Top 8 criadores com mais issues em aberto',
+  'Comparativo de SLA médio por prioridade',
+  'Clientes com mais issues críticos e altos',
+  'Taxa de conclusão por ano (2024, 2025, 2026)',
+  'Distribuição da fila crítica por status'
+];
+
+// ─── ESTADO / CONFIG ───
+const IA = {conectado:false, spec:null, jsonVisivel:false};
+
+function iaConfig(){
+  return {
+    key: iaEl('ia-key').value.trim(),
+    base: (iaEl('ia-base').value.trim() || IA_BASE_PADRAO).replace(/\/+$/,''),
+    model: iaEl('ia-model').value.trim() || IA_MODELO_PADRAO
+  };
+}
+function iaLsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function iaLsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+function iaLsDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+
+function iaPersistir(){
+  const c = iaConfig();
+  iaLsSet(IA_LS.base, c.base);
+  iaLsSet(IA_LS.model, c.model);
+  const lembrar = iaEl('ia-remember').checked;
+  iaLsSet(IA_LS.remember, lembrar ? '1' : '0');
+  if(lembrar && c.key) iaLsSet(IA_LS.key, c.key); else iaLsDel(IA_LS.key);
+  iaLsSet(IA_LS.ds, JSON.stringify(iaDatasetsSelecionados()));
+}
+
+function iaLimpar(){
+  iaEl('ia-key').value = '';
+  iaEl('ia-base').value = IA_BASE_PADRAO;
+  iaEl('ia-model').value = IA_MODELO_PADRAO;
+  iaEl('ia-remember').checked = false;
+  iaEl('ia-modelos').innerHTML = '';
+  [IA_LS.key, IA_LS.base, IA_LS.model, IA_LS.remember].forEach(iaLsDel);
+  IA.conectado = false;
+  iaStatus('off','Desconectado');
+  iaDiagReset();
+  iaMsg('', '');
+}
+
+function iaToggleKey(){
+  const i = iaEl('ia-key'), b = iaEl('ia-btn-eye');
+  const mostrar = i.type === 'password';
+  i.type = mostrar ? 'text' : 'password';
+  b.textContent = mostrar ? 'Ocultar' : 'Mostrar';
+}
+
+function iaStatus(estado, texto){
+  const p = iaEl('ia-pill');
+  p.className = 'conn-pill cp-'+estado;
+  p.innerHTML = '<span class="cpd"></span>'+iaEsc(texto);
+}
+
+function iaMsg(tipo, texto){
+  const el = iaEl('ia-msg');
+  if(!texto){ el.innerHTML = ''; return; }
+  const cls = tipo === 'ok' ? 'ab-success' : tipo === 'info' ? 'ab-info' : tipo === 'warn' ? 'ab-warn' : 'ab-danger';
+  el.innerHTML = '<div class="alertbox '+cls+'">'+iaEsc(texto)+'</div>';
+}
+
+// ─── DIAGNÓSTICO ───
+let iaDiagLinhas = [];
+function iaDiagReset(){ iaDiagLinhas = []; iaDiagRender(); }
+function iaDiagPush(status, titulo, detalhe){ iaDiagLinhas.push({status, titulo, detalhe}); iaDiagRender(); }
+function iaDiagRender(){
+  const el = iaEl('ia-diag');
+  if(!el) return;
+  if(!iaDiagLinhas.length){
+    el.innerHTML = '<div class="dg-empty">Nenhuma verificação executada ainda. Preencha a chave e clique em <strong>Testar conexão</strong> — cada etapa (origem da página, chave, Base URL, endpoint /models e endpoint /chat/completions) será validada separadamente.</div>';
+    return;
+  }
+  const icone = {ok:'✓', warn:'!', fail:'✕', run:'…'};
+  el.innerHTML = iaDiagLinhas.map(r=>
+    '<div class="dg dg-'+r.status+'">'+
+      '<span class="dgi">'+icone[r.status]+'</span>'+
+      '<div><div class="dgt">'+iaEsc(r.titulo)+'</div>'+
+      (r.detalhe ? '<div class="dgd">'+iaEsc(r.detalhe)+'</div>' : '')+'</div>'+
+    '</div>').join('');
+}
+
+// ─── HTTP ───
+async function iaFetch(url, opts, ms){
+  const ac = new AbortController();
+  const t = setTimeout(()=>ac.abort(), ms);
+  try { return await fetch(url, Object.assign({}, opts, {signal:ac.signal})); }
+  finally { clearTimeout(t); }
+}
+
+function iaErroRede(err, base){
+  if(err && err.name === 'AbortError'){
+    return 'Tempo limite excedido ao chamar '+base+'. A rede pode estar lenta ou bloqueando o acesso.';
+  }
+  let m = 'Não foi possível alcançar '+base+'. ';
+  if(location.protocol === 'file:'){
+    m += 'A página está aberta via file:// — vários navegadores bloqueiam requisições nesse modo. Sirva o arquivo por HTTP (ex.: "python3 -m http.server" e abra http://localhost:8000). ';
+  }
+  m += 'Outras causas comuns: sem internet, firewall/proxy corporativo, bloqueio de CORS por um gateway intermediário, ou extensão do navegador (adblock/privacidade) interceptando a chamada.';
+  return m;
+}
+
+async function iaErroHttp(res){
+  let corpo = '', json = null;
+  try { corpo = await res.text(); json = JSON.parse(corpo); } catch(e){}
+  const detalhe = (json && json.error && json.error.message) ? json.error.message : String(corpo||'').slice(0,300);
+  const mapa = {
+    400:'Requisição inválida (400) — algum parâmetro não é aceito por este modelo.',
+    401:'Chave da API inválida, expirada ou revogada (401). Gere uma nova em platform.openai.com/api-keys.',
+    403:'Acesso negado (403). A chave pode não ter permissão para este modelo/projeto, ou a região/gateway está bloqueando a chamada.',
+    404:'Não encontrado (404). Verifique a Base URL e se o modelo informado existe para esta chave.',
+    413:'Payload muito grande (413). Desmarque alguns conjuntos de dados e tente de novo.',
+    422:'Requisição não processável (422).',
+    429:'Limite atingido (429). Pode ser falta de créditos (insufficient_quota) ou excesso de requisições — confira Billing/Usage na OpenAI.',
+    500:'Erro interno da OpenAI (500). Tente novamente em instantes.',
+    502:'Gateway inválido (502) — provável proxy intermediário.',
+    503:'Serviço indisponível (503). Tente novamente em instantes.'
+  };
+  return {
+    status: res.status,
+    codigo: (json && json.error && json.error.code) || '',
+    detalhe: detalhe,
+    msg: (mapa[res.status] || ('Falha HTTP '+res.status+'.')) + (detalhe ? ' Detalhe: '+detalhe : '')
+  };
+}
+
+// ─── TESTE DE CONEXÃO ───
+async function iaTestar(){
+  const c = iaConfig();
+  const btn = iaEl('ia-btn-test');
+  iaDiagReset();
+  iaMsg('', '');
+  IA.conectado = false;
+  iaStatus('run','Verificando');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="ia-spin"></span>Verificando';
+
+  try {
+    // 1. origem da página
+    if(location.protocol === 'file:'){
+      iaDiagPush('warn','Página aberta via file://','O navegador pode bloquear a chamada à API nesse modo. Se falhar abaixo, sirva o dashboard por HTTP.');
+    } else {
+      iaDiagPush('ok','Origem da página', location.origin);
+    }
+
+    // 2. chave
+    if(!c.key){
+      iaDiagPush('fail','Chave da API ausente','Preencha o campo "Chave da API" com uma chave da OpenAI (formato sk-...).');
+      iaStatus('fail','Falha na conexão');
+      iaMsg('fail','Informe a chave da API da OpenAI para conectar.');
+      return false;
+    }
+    if(/\s/.test(iaEl('ia-key').value) && iaEl('ia-key').value.trim() !== iaEl('ia-key').value){
+      iaDiagPush('warn','Espaços na chave','Espaços no início/fim foram removidos automaticamente.');
+    }
+    if(!/^sk-/.test(c.key)){
+      iaDiagPush('warn','Formato incomum de chave','Chaves da OpenAI começam com "sk-". Se você usa um gateway próprio, ignore este aviso.');
+    } else {
+      iaDiagPush('ok','Chave informada', c.key.slice(0,7)+'…'+c.key.slice(-4)+' ('+c.key.length+' caracteres)');
+    }
+
+    // 3. base url
+    let u;
+    try { u = new URL(c.base); }
+    catch(e){
+      iaDiagPush('fail','Base URL inválida', c.base+' — use algo como https://api.openai.com/v1');
+      iaStatus('fail','Falha na conexão');
+      iaMsg('fail','A Base URL informada não é uma URL válida.');
+      return false;
+    }
+    if(location.protocol === 'https:' && u.protocol === 'http:'){
+      iaDiagPush('warn','Conteúdo misto (mixed content)','A página está em HTTPS e a Base URL em HTTP — o navegador vai bloquear. Use HTTPS na Base URL.');
+    }
+    iaDiagPush('ok','Base URL', c.base);
+
+    // 4. GET /models — valida rede, CORS e credencial
+    iaDiagPush('run','Consultando '+c.base+'/models…','');
+    let res;
+    try {
+      res = await iaFetch(c.base+'/models', {method:'GET', headers:{'Authorization':'Bearer '+c.key}}, IA_TIMEOUT_CONEXAO);
+    } catch(err){
+      iaDiagLinhas.pop();
+      iaDiagPush('fail','Falha de rede ao chamar /models', iaErroRede(err, c.base));
+      iaStatus('fail','Falha na conexão');
+      iaMsg('fail','Não foi possível alcançar a API da OpenAI. Veja o diagnóstico ao lado.');
+      return false;
+    }
+    iaDiagLinhas.pop();
+
+    if(!res.ok){
+      const e = await iaErroHttp(res);
+      iaDiagPush('fail','A OpenAI recusou a autenticação (HTTP '+e.status+')', e.msg);
+      iaStatus('fail','Falha na conexão');
+      iaMsg('fail', e.msg);
+      return false;
+    }
+
+    let modelos = [];
+    try {
+      const data = await res.json();
+      modelos = (data.data||[]).map(m=>m.id).filter(Boolean);
+    } catch(e){
+      iaDiagPush('warn','Resposta de /models ilegível','A conexão funcionou, mas a lista de modelos não pôde ser interpretada.');
+    }
+    iaDiagPush('ok','Autenticação válida', modelos.length ? modelos.length+' modelos disponíveis nesta chave' : 'Endpoint /models respondeu com sucesso');
+
+    if(modelos.length){
+      const chat = modelos.filter(id=>/^(gpt|o[0-9]|chatgpt)/i.test(id) && !/(embedding|whisper|tts|dall-e|audio|realtime|image|moderation|transcribe)/i.test(id)).sort();
+      iaEl('ia-modelos').innerHTML = (chat.length ? chat : modelos.sort()).map(id=>'<option value="'+iaEsc(id)+'"></option>').join('');
+      if(chat.length && !chat.includes(c.model)){
+        iaDiagPush('warn','Modelo "'+c.model+'" não está na lista desta chave','Escolha um dos modelos sugeridos no campo Modelo (a lista já foi preenchida).');
+      }
+    }
+
+    // 5. POST /chat/completions — valida de fato o que o gerador usa
+    iaDiagPush('run','Testando '+c.base+'/chat/completions…','');
+    try {
+      const r = await iaChat([{role:'user', content:'Responda apenas: ok'}], {jsonMode:false, maxTokens:16, timeout:IA_TIMEOUT_CONEXAO});
+      iaDiagLinhas.pop();
+      iaDiagPush('ok','Geração de texto funcionando','Modelo respondeu: "'+String(r.texto).trim().slice(0,60)+'" ('+r.modelo+')');
+    } catch(err){
+      iaDiagLinhas.pop();
+      iaDiagPush('fail','O modelo não respondeu', err.message);
+      iaStatus('fail','Falha na conexão');
+      iaMsg('fail','Autenticação ok, mas a geração falhou: '+err.message);
+      return false;
+    }
+
+    IA.conectado = true;
+    iaStatus('ok','Conectado');
+    iaMsg('ok','Conectado à OpenAI. Descreva o gráfico desejado e clique em "Gerar gráfico".');
+    iaPersistir();
+    return true;
+
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Testar conexão';
+  }
+}
+
+// ─── CHAMADA DE CHAT COM AJUSTE AUTOMÁTICO DE PARÂMETROS ───
+async function iaChat(messages, opts){
+  opts = opts || {};
+  const c = iaConfig();
+  const timeout = opts.timeout || IA_TIMEOUT_GERACAO;
+  let usarJson = opts.jsonMode !== false;
+  let usarTemp = true;
+  let usarMaxCompletion = false;
+  let ultimoErro = null;
+
+  for(let tentativa = 1; tentativa <= 5; tentativa++){
+    const body = {model:c.model, messages:messages};
+    if(usarJson) body.response_format = {type:'json_object'};
+    if(usarTemp) body.temperature = 0.2;
+    body[usarMaxCompletion ? 'max_completion_tokens' : 'max_tokens'] = opts.maxTokens || 2400;
+
+    let res;
+    try {
+      res = await iaFetch(c.base+'/chat/completions', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+c.key},
+        body: JSON.stringify(body)
+      }, timeout);
+    } catch(err){
+      throw new Error(iaErroRede(err, c.base));
+    }
+
+    if(res.ok){
+      let data;
+      try { data = await res.json(); }
+      catch(e){ throw new Error('A resposta da API não é um JSON válido — verifique se a Base URL aponta para uma API compatível com a OpenAI.'); }
+      const escolha = data.choices && data.choices[0];
+      const texto = escolha && escolha.message ? (escolha.message.content || '') : '';
+      if(!String(texto).trim()){
+        const motivo = escolha && escolha.finish_reason ? ' (finish_reason: '+escolha.finish_reason+')' : '';
+        throw new Error('O modelo respondeu sem conteúdo'+motivo+'. Tente novamente, reduza os dados enviados ou use outro modelo.');
+      }
+      return {texto:texto, uso:data.usage||null, modelo:data.model||c.model};
+    }
+
+    const e = await iaErroHttp(res);
+    ultimoErro = e;
+    const d = (e.detalhe||'').toLowerCase();
+
+    // modelos mais novos rejeitam max_tokens / temperature / response_format — reajusta e repete
+    if(res.status === 400 && d.indexOf('max_tokens') >= 0 && !usarMaxCompletion){ usarMaxCompletion = true; continue; }
+    if(res.status === 400 && d.indexOf('temperature') >= 0 && usarTemp){ usarTemp = false; continue; }
+    if(res.status === 400 && d.indexOf('response_format') >= 0 && usarJson){ usarJson = false; continue; }
+    if((res.status === 429 || res.status >= 500) && tentativa < 3 && e.codigo !== 'insufficient_quota'){
+      await iaEspera(1200 * tentativa);
+      continue;
+    }
+    throw new Error(e.msg);
+  }
+  throw new Error(ultimoErro ? ultimoErro.msg : 'Não foi possível completar a requisição após várias tentativas.');
+}
+
+// ─── PROMPT ───
+function iaPromptSistema(){
+  return [
+    'Você é um analista de dados que produz especificações de gráficos Chart.js v4 para um dashboard de produto (Jira PROD da Neppo).',
+    'Responda SEMPRE e SOMENTE com um objeto JSON válido — sem markdown, sem cercas de código, sem comentários, sem texto fora do JSON.',
+    'Estrutura exigida:',
+    '{"titulo":string,"subtitulo":string,"insight":string,"chartjs":{"type":string,"data":{"labels":string[],"datasets":[{"label":string,"data":number[],"backgroundColor":string|string[],"borderColor":string|string[]}]},"options":object}}',
+    'Regras obrigatórias:',
+    '- "type" deve ser exatamente um de: '+IA_TIPOS_OK.join(', ')+'.',
+    '- Use APENAS números presentes nos dados fornecidos. Nunca invente, estime ou extrapole valores.',
+    '- Se o pedido não for possível com os dados disponíveis, entregue o gráfico mais próximo possível e explique a limitação em "insight".',
+    '- Cores somente da paleta da marca, em hex ou rgba: roxos #6C169E, #9B47D1, #A788C2; verdes #65CC65, #3FA63F, #A3DDA3; neutros #252C3B, #5A6478, #CDD2DC.',
+    '- Nunca use funções, callbacks, expressões ou strings contendo "function" ou "=>" em qualquer lugar (inclusive em options).',
+    '- Não inclua plugins customizados nem options.plugins.title (o título é renderizado fora do gráfico).',
+    '- Textos em português do Brasil. "insight" deve ter de 1 a 3 frases com a leitura analítica do gráfico.'
+  ].join('\n');
+}
+
+function iaDatasetsSelecionados(){
+  return Array.prototype.slice.call(document.querySelectorAll('#ia-ds input[type=checkbox]'))
+    .filter(i=>i.checked).map(i=>i.value);
+}
+
+// ─── PARSE / SANITIZAÇÃO ───
+function iaExtrairJson(txt){
+  let s = String(txt).trim();
+  s = s.replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,'').trim();
+  try { return JSON.parse(s); } catch(e){}
+  const i = s.indexOf('{'), j = s.lastIndexOf('}');
+  if(i >= 0 && j > i){
+    try { return JSON.parse(s.slice(i, j+1)); } catch(e){}
+  }
+  throw new Error('A resposta da IA não pôde ser interpretada como JSON. Início da resposta: '+s.slice(0,180));
+}
+
+function iaLimparProfundo(v, prof){
+  prof = prof || 0;
+  if(prof > 8) return undefined;
+  if(v === null) return null;
+  const t = typeof v;
+  if(t === 'number') return isFinite(v) ? v : undefined;
+  if(t === 'boolean') return v;
+  if(t === 'string'){
+    // descarta qualquer string que tente representar código executável
+    if(/^\s*(function\b|async\b|\(|\{)/.test(v) || v.indexOf('=>') >= 0) return undefined;
+    return v;
+  }
+  if(Array.isArray(v)) return v.map(x=>iaLimparProfundo(x, prof+1)).filter(x=>x !== undefined);
+  if(t === 'object'){
+    const o = {};
+    Object.keys(v).forEach(k=>{
+      const c = iaLimparProfundo(v[k], prof+1);
+      if(c !== undefined) o[k] = c;
+    });
+    return o;
+  }
+  return undefined;
+}
+
+function iaSanitizar(bruto){
+  if(!bruto || typeof bruto !== 'object' || Array.isArray(bruto)){
+    throw new Error('A IA não retornou um objeto JSON no formato esperado.');
+  }
+  const ch = bruto.chartjs || bruto.chart || bruto.config;
+  if(!ch || typeof ch !== 'object') throw new Error('A resposta da IA não contém a chave "chartjs".');
+
+  const tipo = String(ch.type||'').trim();
+  if(IA_TIPOS_OK.indexOf(tipo) < 0){
+    throw new Error('Tipo de gráfico não suportado: "'+tipo+'". Permitidos: '+IA_TIPOS_OK.join(', ')+'.');
+  }
+  const d = ch.data;
+  if(!d || typeof d !== 'object' || !Array.isArray(d.datasets) || !d.datasets.length){
+    throw new Error('A resposta não traz "data.datasets" com pelo menos uma série.');
+  }
+
+  const labels = Array.isArray(d.labels) ? d.labels.map(x=>String(x)) : [];
+  const datasets = d.datasets.map((ds, i)=>{
+    if(!ds || typeof ds !== 'object') throw new Error('Série '+(i+1)+' inválida.');
+    const out = iaLimparProfundo(ds) || {};
+    out.label = String(ds.label == null ? ('Série '+(i+1)) : ds.label);
+    if(!Array.isArray(ds.data)) throw new Error('A série "'+out.label+'" não possui um array "data".');
+    out.data = ds.data.map(v=>{
+      if(v && typeof v === 'object') return iaLimparProfundo(v);   // scatter/bubble: {x,y,r}
+      const n = Number(v);
+      return isFinite(n) ? n : null;
+    });
+    return out;
+  });
+
+  const options = iaLimparProfundo(ch.options || {}) || {};
+  options.responsive = true;
+  options.maintainAspectRatio = false;
+  if(options.plugins && options.plugins.title) delete options.plugins.title;
+
+  return {
+    titulo: String(bruto.titulo || bruto.title || 'Gráfico gerado pela IA').slice(0,140),
+    subtitulo: String(bruto.subtitulo || bruto.subtitle || '').slice(0,220),
+    insight: String(bruto.insight || bruto.analise || '').slice(0,900),
+    chartjs: {type:tipo, data:{labels:labels, datasets:datasets}, options:options}
+  };
+}
+
+// ─── GERAÇÃO ───
+async function iaGerar(){
+  const pedido = iaEl('ia-prompt').value.trim();
+  const c = iaConfig();
+  const btn = iaEl('ia-btn-gen');
+
+  if(!pedido){ iaMsg('fail','Descreva o gráfico que você quer antes de gerar.'); iaEl('ia-prompt').focus(); return; }
+  if(!c.key){ iaMsg('fail','Informe a chave da OpenAI e clique em "Testar conexão" primeiro.'); iaEl('ia-key').focus(); return; }
+
+  const sel = iaDatasetsSelecionados();
+  if(!sel.length){ iaMsg('fail','Selecione pelo menos um conjunto de dados para enviar à IA.'); return; }
+
+  const contexto = {};
+  sel.forEach(k=>{ if(IA_DATASETS[k]) contexto[IA_DATASETS[k].label] = IA_DATASETS[k].build(); });
+
+  const messages = [
+    {role:'system', content: iaPromptSistema()},
+    {role:'user', content:
+      'Dados disponíveis (JSON):\n'+JSON.stringify(contexto)+
+      '\n\nPedido do usuário: '+pedido+
+      '\n\nGere a especificação JSON do gráfico que melhor atende ao pedido.'}
+  ];
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="ia-spin"></span>Gerando gráfico…';
+  iaMsg('info','Enviando '+sel.length+' conjunto(s) de dados para o modelo '+c.model+'…');
+
+  try {
+    const r = await iaChat(messages, {jsonMode:true, maxTokens:2400});
+    const spec = iaSanitizar(iaExtrairJson(r.texto));
+    iaRender(spec, r);
+    IA.conectado = true;
+    iaStatus('ok','Conectado');
+    iaMsg('ok','Gráfico gerado com sucesso.');
+    iaPersistir();
+  } catch(err){
+    iaMsg('fail', err.message);
+    if(/rede|alcançar|Tempo limite|401|403|429/i.test(err.message)){
+      IA.conectado = false;
+      iaStatus('fail','Falha na conexão');
+    }
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Gerar gráfico';
+  }
+}
+
+function iaRender(spec, meta){
+  IA.spec = spec;
+  iaEl('ia-titulo').textContent = spec.titulo;
+  iaEl('ia-sub').textContent = spec.subtitulo;
+  iaEl('ia-insight').innerHTML = spec.insight
+    ? '<div class="ins i mt"><div class="iic">💡</div><div><div class="ith">Leitura da IA</div><div class="ibody">'+iaEsc(spec.insight)+'</div></div></div>'
+    : '';
+
+  // serializa antes de instanciar: o Chart.js mescla os defaults dentro do objeto de options
+  iaEl('ia-json').textContent = JSON.stringify(spec.chartjs, null, 2);
+
+  iaEl('ia-empty').style.display = 'none';
+  const cv = iaEl('c-ia');
+  cv.style.display = '';
+
+  if(charts['c-ia']){ charts['c-ia'].destroy(); delete charts['c-ia']; }
+  charts['c-ia'] = new Chart(cv.getContext('2d'), JSON.parse(JSON.stringify(spec.chartjs)));
+  iaEl('ia-btn-json').disabled = false;
+  iaEl('ia-btn-png').disabled = false;
+
+  const u = meta && meta.uso;
+  iaEl('ia-uso').textContent = 'Modelo: '+(meta ? meta.modelo : '—')+
+    (u ? ' · tokens: '+(u.prompt_tokens||0)+' entrada + '+(u.completion_tokens||0)+' saída = '+(u.total_tokens||0) : '');
+}
+
+function iaToggleJson(){
+  IA.jsonVisivel = !IA.jsonVisivel;
+  iaEl('ia-json').style.display = IA.jsonVisivel ? '' : 'none';
+  iaEl('ia-btn-json').textContent = IA.jsonVisivel ? 'Ocultar JSON' : 'Ver JSON';
+}
+
+function iaBaixarPng(){
+  const ch = charts['c-ia'];
+  if(!ch) return;
+  const a = document.createElement('a');
+  a.href = ch.toBase64Image('image/png', 1);
+  a.download = 'grafico-ia-neppo.png';
+  a.click();
+}
+
+// ─── INIT ───
+let iaIniciado = false;
+function iaInit(){
+  if(iaIniciado) return;
+  iaIniciado = true;
+
+  // exemplos
+  iaEl('ia-exemplos').innerHTML = IA_EXEMPLOS.map((t,i)=>
+    '<button class="s-tab" type="button" onclick="iaUsarExemplo('+i+')">'+iaEsc(t)+'</button>').join('');
+
+  // conjuntos de dados
+  const salvos = (function(){ try { return JSON.parse(iaLsGet(IA_LS.ds) || 'null'); } catch(e){ return null; } })();
+  iaEl('ia-ds').innerHTML = Object.keys(IA_DATASETS).map(k=>{
+    const marcado = salvos ? salvos.indexOf(k) >= 0 : IA_DATASETS[k].padrao;
+    return '<label class="chk"><input type="checkbox" value="'+k+'"'+(marcado?' checked':'')+'> '+iaEsc(IA_DATASETS[k].label)+'</label>';
+  }).join('');
+
+  // config salva
+  const base = iaLsGet(IA_LS.base); if(base) iaEl('ia-base').value = base;
+  const model = iaLsGet(IA_LS.model); if(model) iaEl('ia-model').value = model;
+  if(iaLsGet(IA_LS.remember) === '1'){
+    iaEl('ia-remember').checked = true;
+    const k = iaLsGet(IA_LS.key);
+    if(k){
+      iaEl('ia-key').value = k;
+      iaStatus('off','Chave carregada');
+    }
+  }
+  iaDiagRender();
+}
+function iaUsarExemplo(i){
+  iaEl('ia-prompt').value = IA_EXEMPLOS[i];
+  iaEl('ia-prompt').focus();
 }
 
 // ═══ BOOT ═══
