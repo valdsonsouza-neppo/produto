@@ -213,6 +213,10 @@ h1 em{color:var(--brand-green);font-style:normal}
 .donut-box canvas{position:absolute!important;top:0;left:0;width:100%!important;height:100%!important}
 .donut-box-lg{position:relative;width:220px;height:220px;flex-shrink:0}
 .donut-box-lg canvas{position:absolute!important;top:0;left:0;width:100%!important;height:100%!important}
+/* Aviso exibido no lugar do gráfico quando o Chart.js não carrega */
+.chart-off{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:16px;font-size:11px;line-height:1.5;color:var(--text3);
+  background:var(--bg2);border:1px dashed var(--border2);border-radius:8px}
 
 /* SCROLL */
 .sy{overflow-y:auto;max-height:460px}
@@ -637,10 +641,10 @@ h1 em{color:var(--brand-green);font-style:normal}
   </div>
 
   <div class="s-tabs mb" id="fila-tabs">
-    <button class="s-tab on" onclick="filaFilter('todos',this)">Todos (51)</button>
-    <button class="s-tab" onclick="filaFilter('prob',this)">Problemas (16)</button>
-    <button class="s-tab" onclick="filaFilter('tar',this)">Tarefas (35)</button>
-    <button class="s-tab" onclick="filaFilter('critica',this)">Só Críticos (9)</button>
+    <button class="s-tab on" data-fila="todos" onclick="filaFilter('todos',this)">Todos</button>
+    <button class="s-tab" data-fila="prob" onclick="filaFilter('prob',this)">Problemas</button>
+    <button class="s-tab" data-fila="tar" onclick="filaFilter('tar',this)">Tarefas</button>
+    <button class="s-tab" data-fila="critica" onclick="filaFilter('critica',this)">Só Críticos</button>
   </div>
 
   <div class="card">
@@ -833,11 +837,18 @@ h1 em{color:var(--brand-green);font-style:normal}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
-Chart.defaults.color = '#5A6478';
-Chart.defaults.borderColor = '#E3E6EC';
-Chart.defaults.font.family = "'Roboto', sans-serif";
-Chart.defaults.font.size = 11;
-Chart.defaults.font.weight = 500;
+// Chart.js vem de CDN e pode falhar (rede offline, proxy corporativo, bloqueio).
+// Nada aqui no topo pode tocar em `Chart` diretamente: uma exceção neste ponto
+// aborta o script inteiro e deixa TODAS as tabelas e rankings vazios.
+function setupChartDefaults() {
+  if (!window.Chart) return false;
+  Chart.defaults.color = '#5A6478';
+  Chart.defaults.borderColor = '#E3E6EC';
+  Chart.defaults.font.family = "'Roboto', sans-serif";
+  Chart.defaults.font.size = 11;
+  Chart.defaults.font.weight = 500;
+  return true;
+}
 
 // Brand palette for charts
 const BRAND = {
@@ -962,18 +973,32 @@ const filaCritica = [
 
 // ═══ NAV ═══
 const charts = {};
+// Seções cujos gráficos não puderam ser desenhados por falta do Chart.js —
+// redesenhadas assim que a biblioteca terminar de carregar.
+const pendingCharts = new Set();
+let currentSection = 'geral';
 function show(id, btn) {
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
   document.getElementById(id).classList.add('on');
   btn.classList.add('on');
+  currentSection = id;
   setTimeout(()=>initSection(id), 80);
 }
 
 // ═══ CHART HELPERS ═══
+// Devolve o canvas pronto para desenhar, ou null quando o gráfico não pode ser
+// criado. Retornar null (em vez de estourar) mantém tabelas e rankings vivos.
+function chartCtx(id) {
+  if(charts[id]) return null;
+  const el = document.getElementById(id);
+  if(!el) return null;
+  if(!window.Chart) { pendingCharts.add(currentSection); markChartUnavailable(el); return null; }
+  return el.getContext('2d');
+}
 function mkDonut(id, labels, data, colors) {
-  if(charts[id]) return;
-  const ctx = document.getElementById(id).getContext('2d');
+  const ctx = chartCtx(id);
+  if(!ctx) return;
   charts[id] = new Chart(ctx, {
     type:'doughnut',
     data:{labels, datasets:[{data, backgroundColor:colors, borderWidth:2, borderColor:'#FFFFFF', hoverOffset:6}]},
@@ -982,8 +1007,8 @@ function mkDonut(id, labels, data, colors) {
   });
 }
 function mkBar(id, labels, datasets, opts={}) {
-  if(charts[id]) return;
-  const ctx = document.getElementById(id).getContext('2d');
+  const ctx = chartCtx(id);
+  if(!ctx) return;
   charts[id] = new Chart(ctx, {
     type:'bar',
     data:{labels, datasets},
@@ -995,8 +1020,8 @@ function mkBar(id, labels, datasets, opts={}) {
   });
 }
 function mkLine(id, labels, datasets) {
-  if(charts[id]) return;
-  const ctx = document.getElementById(id).getContext('2d');
+  const ctx = chartCtx(id);
+  if(!ctx) return;
   charts[id] = new Chart(ctx,{
     type:'line',
     data:{labels, datasets},
@@ -1036,7 +1061,7 @@ function initSection(id) {
     mkDonut('c-tar-status',
       ['Aberto','Concluído','Cancelado','Aguard. Deploy','Para Fazer','Em Validação','Triagem','Em Progresso','Suspenso+Revisar'],
       [291,174,78,55,59,20,34,35,19], STATUSES_COLORS);
-    populateRank('tar-rank-total', topCriadoresTar, 'total', 'ca');
+    populateRank('tar-rank-total', topCriadoresTar, 'tot', 'ca');
     populateRank('tar-rank-abertos', [...topCriadoresTar].sort((a,b)=>b.ab-a.ab), 'ab', 'cr');
   }
   if(id==='problemas') {
@@ -1143,7 +1168,8 @@ function initCriChart(tab) {
   } else {
     data=topCriadoresProb.slice(0,10);
   }
-  const ctx = document.getElementById('c-cri-chart').getContext('2d');
+  const ctx = chartCtx('c-cri-chart');
+  if(!ctx) return;
   charts['c-cri-chart'] = new Chart(ctx,{
     type:'bar',
     data:{labels:data.map(d=>d.n.split('.')[0]),
@@ -1160,6 +1186,20 @@ function initCriChart(tab) {
 
 // ═══ FILA ═══
 let filaCurrentFilter = 'todos';
+function filaSubset(filter) {
+  if(filter==='prob') return filaCritica.filter(d=>d.tp==='Problema');
+  if(filter==='tar') return filaCritica.filter(d=>d.tp==='Tarefa');
+  if(filter==='critica') return filaCritica.filter(d=>['Crítica','Bloqueadora'].includes(d.pr));
+  return filaCritica;
+}
+// Contadores derivados da própria lista — antes eram fixos no HTML e já não
+// batiam com os registros exibidos.
+function updateFilaCounts() {
+  document.querySelectorAll('#fila-tabs .s-tab').forEach(b=>{
+    const base = b.textContent.replace(/\s*\(\d+\)\s*$/,'').trim();
+    b.textContent = `${base} (${filaSubset(b.dataset.fila).length})`;
+  });
+}
 function filaFilter(f, btn) {
   filaCurrentFilter = f;
   document.querySelectorAll('#fila-tabs .s-tab').forEach(b=>b.classList.remove('on'));
@@ -1169,10 +1209,8 @@ function filaFilter(f, btn) {
 function populateFilaTable(filter) {
   const el = document.getElementById('fila-table');
   el.innerHTML = '';
-  let data = filaCritica;
-  if(filter==='prob') data=data.filter(d=>d.tp==='Problema');
-  if(filter==='tar') data=data.filter(d=>d.tp==='Tarefa');
-  if(filter==='critica') data=data.filter(d=>['Crítica','Bloqueadora'].includes(d.pr));
+  updateFilaCounts();
+  const data = filaSubset(filter);
   const prioMap = {
     'Bloqueadora':'<span class="b bbl">Bloqueadora</span>',
     'Crítica':'<span class="b bc">Crítica</span>',
@@ -1251,8 +1289,43 @@ function populateVolTables() {
   });
 }
 
+// ═══ CHART.JS LOADER (com fallback de CDN) ═══
+const CHARTJS_CDNS = [
+  'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js',
+  'https://unpkg.com/chart.js@4.4.1/dist/chart.umd.min.js'
+];
+function markChartUnavailable(canvas) {
+  const box = canvas.parentElement;
+  if(!box || box.querySelector('.chart-off')) return;
+  const msg = document.createElement('div');
+  msg.className = 'chart-off';
+  msg.textContent = 'Gráfico indisponível — não foi possível carregar a biblioteca Chart.js.';
+  box.appendChild(msg);
+}
+function clearChartWarnings() {
+  document.querySelectorAll('.chart-off').forEach(el=>el.remove());
+}
+function onChartReady() {
+  setupChartDefaults();
+  clearChartWarnings();
+  const sections = new Set(pendingCharts);
+  pendingCharts.clear();
+  sections.add(currentSection);
+  sections.forEach(initSection);
+}
+function loadChartJs(i) {
+  if(window.Chart) { onChartReady(); return; }
+  if(i >= CHARTJS_CDNS.length) return;  // segue sem gráficos; os dados continuam na tela
+  const s = document.createElement('script');
+  s.src = CHARTJS_CDNS[i];
+  s.onload = ()=> window.Chart ? onChartReady() : loadChartJs(i+1);
+  s.onerror = ()=> loadChartJs(i+1);
+  document.head.appendChild(s);
+}
+
 // ═══ BOOT ═══
-setTimeout(()=>initSection('geral'), 100);
+setupChartDefaults();
+setTimeout(()=>{ initSection('geral'); loadChartJs(0); }, 100);
 </script>
 </body>
 </html>
